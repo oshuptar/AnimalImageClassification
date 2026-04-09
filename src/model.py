@@ -19,6 +19,7 @@ class ConvBlock(nn.Module):
         super().__init__()
         self.net = nn.Sequential(
             nn.Conv2d(in_channels=in_channels, out_channels=out_channels, kernel_size=kernel_size, padding=padding),
+            nn.ReLU()
         )
     
     def forward(self, x):
