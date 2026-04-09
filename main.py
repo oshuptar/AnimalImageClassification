@@ -1,10 +1,10 @@
 from src.model import ConvolutionModel
-from src.utils import (get_device, compute_macros_for_class, compute_f1_score_per_class,
+from src.utils import (get_device, compute_f1_score_per_class,
                        get_batch_size, get_filter_size, get_learning_rate, get_weight_decay,
                        compute_f1_macro)
 from src.dataset import (get_data_loaders, get_datasets)
 from src.train import (train_model, evaluate_model)
-from src.plotting import (plot_loss_and_accuracy_over_epochs)
+from src.plotting import (plot_loss_and_accuracy_over_epochs, plot_confusion_matrix)
 import torch.optim as optim
 import torch.nn as nn
 
@@ -27,6 +27,10 @@ def main():
     print("\nQ7- Hyperparameter tuning")
     best_configuration = grid_experiment(criterion,device)
     best_model = best_configuration["model"]
+
+    print("\nQ8")
+    _, _, _, confusion_matrix = evaluate_model(best_model, val_loader, criterion, class_to_idx, device)
+    plot_confusion_matrix(confusion_matrix, class_to_idx)
 
 def grid_experiment(criterion, device):
     experiments = []

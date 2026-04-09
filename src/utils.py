@@ -47,6 +47,15 @@ def compute_f1_macro(f1_scores):
     f1_macro = f1_macro/num_classes
     return f1_macro
 
+def row_normalise_confusion_matrix(confusion_matrix):
+    confusion_matrix = confusion_matrix.astype(float).copy()
+    num_classes = len(confusion_matrix)
+    for i in range(num_classes):
+        row_sum = confusion_matrix[i, :].sum()
+        if row_sum > 0:
+            confusion_matrix[i, :] = confusion_matrix[i, :] / row_sum
+    return confusion_matrix
+
 def get_filter_size():
     return [32, 64]
 
