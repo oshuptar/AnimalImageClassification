@@ -1,7 +1,10 @@
 from torch import device
+from torch.utils.data import DataLoader
+import torch.nn as nn
 import torch
 import os
 import csv
+import time
 
 def get_device() -> device:
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -95,6 +98,41 @@ def save_test_results(folder_name: str, filename: str, history: list[dict], clas
 
     print(f"Results were successfully written to {output_path}")
 
+# the test_model is slightly more generic - hence a special benchmark function was created
+def benchmark_inference_throughput(model: nn.Module, test_loader: DataLoader, device: torch.device):
+    model.to(device)
+    model.eval()
+    total_images = 0
+    # warmup
+    with torch.no_grad():
+        for i, (X, _, _) in enumerate(test_loader):
+            X = X.to(device)
+            logits = model(X)
+            probs = torch.softmax(logits, dim=1)
+            k = min(5, probs.size(dim = 1))
+            _, _ = torch.topk(probs, k=k, dim=1)
+            if i == 2:
+                break
+
+    if device.type == "cuda":
+        torch.cuda.synchronize()
+    start = time.perf_counter()
+    with torch.no_grad():
+        for X, _, _ in test_loader:
+            X = X.to(device)
+            logits = model(X)
+            probs = torch.softmax(logits, dim=1)
+            k = min(5, probs.size(dim = 1))
+            _, _ = torch.topk(probs, k=k, dim=1)
+            total_images += X.size(0)
+
+    if device.type == "cuda":
+        torch.cuda.synchronize()
+
+    end = time.perf_counter()
+    elapsed = end - start
+    throughput = total_images / elapsed
+    return throughput, elapsed
 
 def get_filter_size():
     return [32, 64]

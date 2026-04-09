@@ -1,8 +1,8 @@
 from src.model import ConvolutionModel
 from src.utils import (get_device, compute_f1_score_per_class,
                        get_batch_size, get_filter_size, get_learning_rate, get_weight_decay,
-                       compute_f1_macro, save_test_results)
-from src.dataset import (get_data_loaders, get_datasets)
+                       compute_f1_macro, save_test_results, benchmark_inference_throughput)
+from src.dataset import (get_data_loaders)
 from src.train import (train_model, evaluate_model, test_model)
 from src.plotting import (plot_loss_and_accuracy_over_epochs, plot_confusion_matrix)
 import torch.optim as optim
@@ -35,6 +35,8 @@ def main():
     print("\nQ9")
     test_results = test_model(best_model, test_loader, device)
     save_test_results(folder_name = "testing",filename = "results", history=test_results, class_to_idx=class_to_idx)
+    throughput, _ = benchmark_inference_throughput(best_model, test_loader, device)
+    print(f"Benchmark results: throughput = {throughput}img/s")
 
 def grid_experiment(criterion, device):
     experiments = []

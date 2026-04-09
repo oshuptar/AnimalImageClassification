@@ -59,6 +59,7 @@ def evaluate_model(model: nn.Module, val_loader, criterion, class_to_idx, device
 
     return total_loss, correct, total, confusion_matrix
 
+# test model is intended to be as abstract as possible, hence it returns all needed information for later processing
 def test_model(model: nn.Module, test_loader, device):
     model.to(device)
     model.eval()
@@ -68,11 +69,13 @@ def test_model(model: nn.Module, test_loader, device):
             X, y = X.to(device), y.to(device)
             logits = model(X)
             probabilities = torch.softmax(logits, dim = 1)
+            probabilities_cpu = probabilities.cpu()
+            y_cpu = y.cpu()
             for i in range(X.size(0)):
                 history.append({
                     "filename": filenames[i],
-                    "actual": y[i].item(),
-                    "probabilities": probabilities[i].cpu().numpy()
+                    "actual": y_cpu[i].item(),
+                    "probabilities": probabilities_cpu[i].numpy()
                 })
     return history
 
@@ -88,8 +91,8 @@ def report_metrics(confusion_matrix, class_to_idx):
 
     sorted_scores = sorted(f1_scores, key = lambda x: x[1])
     weakest_three = sorted_scores[:3]
-    print(f"The weakest three classes:")
-    i = 1;
+    print("The weakest three classes:")
+    i = 1
     for class_name, f1_score in weakest_three:
         print(f"{i}. {class_name} - {f1_score}")
         i += 1
