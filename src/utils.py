@@ -16,11 +16,11 @@ def compute_macros_for_class(confusion_matrix, class_label: int) -> tuple[float,
         if len(row) != num_classes:
             raise ValueError("The dimension of confusion matrix do not match")
         
-    if class_label >= num_classes:
+    if class_label >= num_classes or class_label < 0:
         raise ValueError("The class label cannot be larger then the number of classes")
     
     tp = 0; tn = 0; fp = 0; fn = 0;
-    tp = confusion_matrix[class_label][class_label]
+    tp = confusion_matrix[class_label, class_label]
     fp = confusion_matrix[:, class_label].sum() - tp
     fn = confusion_matrix[class_label, :].sum() - tp
     tn = confusion_matrix.sum() - tp - fp - fn 
@@ -30,7 +30,7 @@ def compute_macros_for_class(confusion_matrix, class_label: int) -> tuple[float,
     f1_score = 2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0.0
     return precision, recall, f1_score
 
-def f1_score_per_class(confusion_matrix, class_to_idx):
+def compute_f1_score_per_class(confusion_matrix, class_to_idx):
     f1_score_per_class = []
     for class_name in class_to_idx.keys():
         class_label = class_to_idx[class_name]
@@ -38,4 +38,24 @@ def f1_score_per_class(confusion_matrix, class_to_idx):
         f1_score_per_class.append((class_name, f1_score))
         
     return f1_score_per_class
+
+def compute_f1_macro(f1_scores):
+    f1_macro = 0.0
+    num_classes = len(f1_scores)
+    for _, f1_score in f1_scores:
+        f1_macro += f1_score
+    f1_macro = f1_macro/num_classes
+    return f1_macro
+
+def get_filter_size():
+    return [32, 64]
+
+def get_learning_rate():
+    return [1e-3, 3e-4]
+
+def get_batch_size():
+    return [64, 128]
+
+def get_weight_decay():
+    return [0, 1e-4]
     
