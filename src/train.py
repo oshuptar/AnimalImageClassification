@@ -3,7 +3,10 @@ import torch
 
 def train_model(model: nn.Module, train_loader, val_loader, criterion, optimizer, epochs, device):
     model.to(device)
-    max_acc = 0;
+    history = {
+        "loss": [],
+        "acc": []
+    }
     for epoch in range(epochs):
         model.train()
         epoch_loss = 0.0
@@ -19,14 +22,16 @@ def train_model(model: nn.Module, train_loader, val_loader, criterion, optimizer
             total += y.size(dim = 0)
             optimizer.step()
 
-        val_loss, val_correct, val_total = evaluate_model(model, val_loader, criterion, device)
-        val_acc = correct/total
+        total_val_loss, val_correct, val_total = evaluate_model(model, val_loader, criterion, device)
+        val_acc = val_correct/val_total
+        val_loss = total_val_loss / len(val_loader)
+        history["loss"].append(val_loss)
+        history["acc"].append(val_acc)
         print(f"\nEpoch {epoch+1}/{epochs}:")
         print(f"Train Acc: {correct/total}. Train Loss: {epoch_loss / len(train_loader):.4f}")
-        print(f"Val Acc: {val_acc}. Val Loss: {val_loss / len(val_loader)}")
-        max_acc = max(max_acc, val_acc)
+        print(f"Val Acc: {val_acc}. Val Loss: {val_loss}")
 
-    return model, max_acc
+    return model, history
 
 def evaluate_model(model: nn.Module, val_loader, criterion, device):
     model.to(device)
