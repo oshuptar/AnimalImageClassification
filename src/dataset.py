@@ -15,10 +15,11 @@ def transform_images(dir_name = "data/train"):
 def load_images(dir_name, transform = None):
     return ImageFolder(dir_name, transform = transform)
 
-def get_datasets() -> tuple[Dataset, Dataset, Dataset, int]:
+def get_datasets() -> tuple[Dataset, Dataset, Dataset, dict[str, int]]:
     full_train_dataset = transform_images()
     test_dataset = load_images(dir_name="data/test")
 
+    class_to_idx = full_train_dataset.class_to_idx
     indeces = list(range(len(full_train_dataset)))
     targets = full_train_dataset.targets
     val_ratio = 0.2
@@ -28,14 +29,13 @@ def get_datasets() -> tuple[Dataset, Dataset, Dataset, int]:
                     random_state=67)
     train_dataset = Subset(full_train_dataset, train_indices)
     val_dataset = Subset(full_train_dataset, val_indices)
-    num_classes = len(full_train_dataset.classes)
-    return train_dataset, val_dataset, test_dataset, num_classes
+    return train_dataset, val_dataset, test_dataset, class_to_idx
 
-def get_data_loaders(batch_size = 64) -> tuple[DataLoader, DataLoader, DataLoader, int]:
-    train_dataset, val_dataset, test_dataset, num_classes = get_datasets()
+def get_data_loaders(batch_size = 64) -> tuple[DataLoader, DataLoader, DataLoader, dict[str, int]]:
+    train_dataset, val_dataset, test_dataset, class_to_idx = get_datasets()
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
-    return train_loader, val_loader, test_loader, num_classes
+    return train_loader, val_loader, test_loader, class_to_idx
     
     

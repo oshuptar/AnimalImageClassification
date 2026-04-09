@@ -1,12 +1,14 @@
 import torch.nn as nn
+import numpy as np
 import torch
 
-def train_model(model: nn.Module, train_loader, val_loader, criterion, optimizer, epochs, device):
+def train_model(model: nn.Module, train_loader, val_loader, criterion, optimizer, epochs, device, num_classes = 2):
     model.to(device)
     history = {
         "loss": [],
         "acc": []
     }
+    confusion_matrix = np.zeros((num_classes, num_classes), dtype=int) # rows correspond to the true value, columns correspond to the predicted value
     for epoch in range(epochs):
         model.train()
         epoch_loss = 0.0
@@ -21,6 +23,8 @@ def train_model(model: nn.Module, train_loader, val_loader, criterion, optimizer
             correct += (pred.argmax(dim = 1) == y).sum().item()
             total += y.size(dim = 0)
             optimizer.step()
+            for true_label, pred_label in zip(y, pred.argmax(dim = 1)):
+                confusion_matrix[true_label.item(), pred_label.item()] += 1
 
         total_val_loss, val_correct, val_total = evaluate_model(model, val_loader, criterion, device)
         val_acc = val_correct/val_total
@@ -31,7 +35,7 @@ def train_model(model: nn.Module, train_loader, val_loader, criterion, optimizer
         print(f"Train Acc: {correct/total}. Train Loss: {epoch_loss / len(train_loader):.4f}")
         print(f"Val Acc: {val_acc}. Val Loss: {val_loss}")
 
-    return model, history
+    return model, history, confusion_matrix
 
 def evaluate_model(model: nn.Module, val_loader, criterion, device):
     model.to(device)
