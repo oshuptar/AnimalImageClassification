@@ -1,9 +1,9 @@
 from src.model import ConvolutionModel
 from src.utils import (get_device, compute_f1_score_per_class,
                        get_batch_size, get_filter_size, get_learning_rate, get_weight_decay,
-                       compute_f1_macro)
+                       compute_f1_macro, save_test_results)
 from src.dataset import (get_data_loaders, get_datasets)
-from src.train import (train_model, evaluate_model)
+from src.train import (train_model, evaluate_model, test_model)
 from src.plotting import (plot_loss_and_accuracy_over_epochs, plot_confusion_matrix)
 import torch.optim as optim
 import torch.nn as nn
@@ -31,6 +31,10 @@ def main():
     print("\nQ8")
     _, _, _, confusion_matrix = evaluate_model(best_model, val_loader, criterion, class_to_idx, device)
     plot_confusion_matrix(confusion_matrix, class_to_idx)
+
+    print("\nQ9")
+    test_results = test_model(best_model, test_loader, device)
+    save_test_results(folder_name = "testing",filename = "results", history=test_results, class_to_idx=class_to_idx)
 
 def grid_experiment(criterion, device):
     experiments = []

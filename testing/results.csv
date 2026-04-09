@@ -1,0 +1,41 @@
+filename,actual,top_1,top_5
+k4 (71).jpg,bears,bears:0.7442,bears:0.744245707988739 | elephants:0.2557542026042938
+k4 (72).jpeg,bears,bears:0.7029,bears:0.7029484510421753 | elephants:0.2970515191555023
+k4 (72).jpg,bears,bears:0.7490,bears:0.7490315437316895 | elephants:0.25096848607063293
+k4 (73).jpeg,bears,elephants:0.9890,elephants:0.9890268445014954 | bears:0.010973205789923668
+k4 (73).jpg,bears,bears:0.7490,bears:0.7490314245223999 | elephants:0.2509686052799225
+k4 (74).jpeg,bears,bears:0.7202,bears:0.7201806902885437 | elephants:0.2798192501068115
+k4 (74).jpg,bears,elephants:0.6654,elephants:0.6653761863708496 | bears:0.3346237540245056
+k4 (75).jpeg,bears,elephants:0.5852,elephants:0.5851517915725708 | bears:0.4148482084274292
+k4 (75).jpg,bears,bears:0.9305,bears:0.9304749965667725 | elephants:0.06952498853206635
+k4 (76).jpeg,bears,bears:0.5524,bears:0.5523906946182251 | elephants:0.4476093351840973
+k4 (76).jpg,bears,bears:0.9775,bears:0.9774622321128845 | elephants:0.022537797689437866
+k4 (77).jpeg,bears,bears:0.9789,bears:0.9788682460784912 | elephants:0.021131806075572968
+k4 (77).jpg,bears,elephants:0.6460,elephants:0.6460056304931641 | bears:0.35399436950683594
+k4 (78).jpeg,bears,bears:0.5574,bears:0.5573813915252686 | elephants:0.44261857867240906
+k4 (78).jpg,bears,bears:0.9465,bears:0.9464892148971558 | elephants:0.053510744124650955
+k4 (79).jpeg,bears,bears:0.9934,bears:0.9934390187263489 | elephants:0.006561041343957186
+k4 (79).jpg,bears,elephants:0.9963,elephants:0.996268093585968 | bears:0.003731959965080023
+k4 (80).jpeg,bears,elephants:0.9891,elephants:0.9891035556793213 | bears:0.010896410793066025
+k4 (80).jpg,bears,bears:0.9928,bears:0.9928038716316223 | elephants:0.007196138147264719
+k4 (81).jpeg,bears,elephants:0.7216,elephants:0.7215775847434998 | bears:0.27842235565185547
+images (42).jpeg,elephants,elephants:0.9937,elephants:0.9937182664871216 | bears:0.006281756330281496
+images (43).jpeg,elephants,bears:0.9253,bears:0.92532879114151 | elephants:0.07467120885848999
+images (44).jpeg,elephants,elephants:1.0000,elephants:0.9999804496765137 | bears:1.9570739823393524e-05
+images (45).jpeg,elephants,elephants:1.0000,elephants:0.9999731779098511 | bears:2.6845336833503097e-05
+lionesses_644822__340.jpg,elephants,bears:0.9631,bears:0.9631081223487854 | elephants:0.03689194470643997
+mala_mala_200064__340.jpg,elephants,elephants:0.9332,elephants:0.9332056641578674 | bears:0.06679438054561615
+namibia_1057544__340.jpg,elephants,elephants:1.0000,elephants:1.0 | bears:4.234719597207004e-08
+nature_3306013__340.jpg,elephants,bears:0.8718,bears:0.8718109130859375 | elephants:0.1281890571117401
+pexels_photo_1054672.jpeg,elephants,elephants:0.6022,elephants:0.6021615862846375 | bears:0.3978384733200073
+pexels_photo_1623221.jpeg,elephants,elephants:0.9662,elephants:0.9661960601806641 | bears:0.03380390629172325
+pexels_photo_2193077.jpeg,elephants,elephants:0.8186,elephants:0.8185630440711975 | bears:0.1814369261264801
+pexels_photo_2278198.jpeg,elephants,bears:0.5259,bears:0.5259303450584412 | elephants:0.47406965494155884
+pexels_photo_247431.jpeg,elephants,elephants:0.6328,elephants:0.632796049118042 | bears:0.367203950881958
+pexels_photo_469675.jpeg,elephants,elephants:0.8324,elephants:0.8324320316314697 | bears:0.16756796836853027
+pexels_photo_631317.jpeg,elephants,elephants:0.9995,elephants:0.9995248317718506 | bears:0.0004751594678964466
+pexels_photo_667205.jpeg,elephants,elephants:0.9998,elephants:0.9998458623886108 | bears:0.00015414113295264542
+pexels_photo_803845.jpeg,elephants,bears:0.5987,bears:0.5986633896827698 | elephants:0.4013366401195526
+pexels_photo_861321.jpeg,elephants,elephants:0.9925,elephants:0.9925066828727722 | bears:0.007493269629776478
+photo_1543242010_07563b3d2a2c.jpeg,elephants,elephants:0.9806,elephants:0.9806340932846069 | bears:0.01936584711074829
+photo_1543838215_403d7bf6e149.jpeg,elephants,elephants:0.5336,elephants:0.533595621585846 | bears:0.46640437841415405

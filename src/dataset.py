@@ -1,23 +1,32 @@
 import torchvision.transforms as transforms
 from sklearn.model_selection import train_test_split
 import torch.nn as nn
+import os
 from torch.utils.data import TensorDataset, Dataset, Subset, DataLoader
 from torchvision.datasets import ImageFolder
 
-def transform_images(dir_name = "data/train"):
+
+class TestDataset(ImageFolder):
+    def __getitem__(self, index):
+        image, label = super().__getitem__(index)
+        path, _ = self.samples[index]
+        filename = os.path.basename(path)
+        return image, label, filename
+
+def build_dataset(dir_name, dataset):
     transform = transforms.Compose([
         transforms.Resize((128, 128)),
         transforms.ToTensor(),
         transforms.Normalize(mean = [0.5, 0.5, 0.5], std= [0.5, 0.5, 0.5])
     ])
-    return load_images(dir_name=dir_name, transform=transform)
+    return load_images(dir_name=dir_name, dataset=dataset, transform=transform)
 
-def load_images(dir_name, transform = None):
-    return ImageFolder(dir_name, transform = transform)
+def load_images(dir_name, dataset, transform = None):
+    return dataset(dir_name, transform = transform)
 
 def get_datasets() -> tuple[Dataset, Dataset, Dataset, dict[str, int]]:
-    full_train_dataset = transform_images()
-    test_dataset = load_images(dir_name="data/test")
+    full_train_dataset = build_dataset(dir_name = "data/train", dataset=ImageFolder)
+    test_dataset = build_dataset(dir_name="data/test", dataset=TestDataset)
 
     class_to_idx = full_train_dataset.class_to_idx
     indeces = list(range(len(full_train_dataset)))

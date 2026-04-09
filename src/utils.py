@@ -1,5 +1,7 @@
 from torch import device
 import torch
+import os
+import csv
 
 def get_device() -> device:
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -55,6 +57,44 @@ def row_normalise_confusion_matrix(confusion_matrix):
         if row_sum > 0:
             confusion_matrix[i, :] = confusion_matrix[i, :] / row_sum
     return confusion_matrix
+
+def save_test_results(folder_name: str, filename: str, history: list[dict], class_to_idx):
+    idx_to_class = {v: k for k, v in class_to_idx.items()}
+    root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    target_dir = os.path.join(root_dir, folder_name)
+    os.makedirs(target_dir, exist_ok=True)
+    output_path = os.path.join(target_dir, filename + '.csv')
+    
+    with open(output_path, mode="w", encoding="utf-8", newline="") as file:
+        csv_writer = csv.writer(file)
+        csv_writer.writerow(["filename", "actual", "top_1", "top_5"])
+
+        for record in history:
+            probabilities = record["probabilities"]
+            class_probability_pairs = [
+                (idx_to_class[i], float(probabilities[i]))
+                for i in range(len(probabilities))
+            ]
+            sorted_probabilities = sorted(
+                class_probability_pairs,
+                key=lambda x: x[1],
+                reverse=True
+            )
+            top1 = sorted_probabilities[0]
+            top5 = sorted_probabilities[:5]
+            top1_class, top1_prob = top1
+            top5_str = " | ".join(
+                f"{class_name}:{class_prob}" for class_name, class_prob in top5
+            )
+            csv_writer.writerow([
+                record["filename"],
+                idx_to_class[record["actual"]],
+                f"{top1_class}:{top1_prob:.4f}",
+                top5_str
+            ])
+
+    print(f"Results were successfully written to {output_path}")
+
 
 def get_filter_size():
     return [32, 64]

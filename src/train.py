@@ -59,6 +59,23 @@ def evaluate_model(model: nn.Module, val_loader, criterion, class_to_idx, device
 
     return total_loss, correct, total, confusion_matrix
 
+def test_model(model: nn.Module, test_loader, device):
+    model.to(device)
+    model.eval()
+    history = []
+    with torch.no_grad():
+        for X, y, filenames in test_loader:
+            X, y = X.to(device), y.to(device)
+            logits = model(X)
+            probabilities = torch.softmax(logits, dim = 1)
+            for i in range(X.size(0)):
+                history.append({
+                    "filename": filenames[i],
+                    "actual": y[i].item(),
+                    "probabilities": probabilities[i].cpu().numpy()
+                })
+    return history
+
 def report_epoch_summary(epoch: int, epochs: int, train_loss: float, train_acc: float, val_loss: float, val_acc: float):
     print(f"\nEpoch {epoch + 1}/{epochs}:")
     print(f"Train Acc: {train_acc:.4f}. Train Loss: {train_loss:.4f}")
